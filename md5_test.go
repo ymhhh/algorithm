@@ -70,15 +70,18 @@ func panicSetMaxTimes() {
 }
 
 func TestSetMD5MaxTimes(t *testing.T) {
-	var times uint
+
 	Convey("test set md5 max times", t, func() {
 		Convey("when times equals 0", func() {
 			Convey("should be panic", func() {
 				So(panicSetMaxTimes, ShouldPanic)
 			})
 		})
-		times = 5
-		algorithm.SetMD5MaxTimes(times)
+		var times uint = 5
+
+		Convey("set md5 max times: 5", func() {
+			algorithm.SetMD5MaxTimes(times)
+		})
 
 		Convey("when times equals 1", func() {
 			Convey("should return md5 \"test\" once", func() {
