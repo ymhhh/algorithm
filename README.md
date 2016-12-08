@@ -1,5 +1,9 @@
 # algorithm
 
+##
+
+* [![Build Status](https://travis-ci.org/go-rut/algorithm.png)](https://travis-ci.org/go-rut/algorithm)
+
 ## Hash
 
 ### Test file
