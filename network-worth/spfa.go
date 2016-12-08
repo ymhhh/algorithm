@@ -211,6 +211,8 @@ func (p *SPFA) rollbackKey(s string) []string {
 }
 
 func (p *SPFA) PrintGraphs() {
+	p.RLock()
+	defer p.RUnlock()
 	for k, vs := range p.mapGraphs {
 		for _, v := range vs {
 			fmt.Println(k, *v)
