@@ -2,7 +2,7 @@
 
 // Copyright (c) 2016 rutcode-go
 
-package algorithm
+package interests
 
 import (
 	"math"

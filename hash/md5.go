@@ -2,23 +2,27 @@
 
 // Copyright (c) 2016 rutcode-go
 
-package algorithm
+package hash
 
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 )
 
 var (
 	maxMD5Times uint = 10
+
+	ErrMaxMD5TimesShouldGreaterThanZero = errors.New("md5 max times must above zero")
 )
 
 // default max md5 times is 10
-func SetMD5MaxTimes(times uint) {
+func SetMD5MaxTimes(times uint) error {
 	if times <= 0 {
-		panic("md5 max times must above zero")
+		return ErrMaxMD5TimesShouldGreaterThanZero
 	}
 	maxMD5Times = times
+	return nil
 }
 
 func MD5(s string) string {
