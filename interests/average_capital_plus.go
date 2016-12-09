@@ -55,7 +55,7 @@ func (p *averageCapitalPlus) calcPayback(set *InterestSets) (back *Payback) {
 			Total:      tmpPerInterests + tmpPerPrincipal,
 			StartDate:  format.TimeToStringDate(set.inStartDate),
 		}
-		set.inStartDate = p.getNextMonthDay(set.inStartDate, back.PayBackDay)
+		set.inStartDate = getNextMonthDay(set.inStartDate, back.PayBackDay)
 		item.EndDate = format.TimeToStringDate(set.inStartDate.AddDate(0, 0, -1))
 		item.PayDate = format.TimeToStringDate(set.inStartDate)
 		back.EndDate = format.TimeToStringDate(set.inStartDate)
@@ -66,7 +66,7 @@ func (p *averageCapitalPlus) calcPayback(set *InterestSets) (back *Payback) {
 }
 
 // getNextMonthDay 获取下一个付息日
-func (p *averageCapitalPlus) getNextMonthDay(input time.Time, dueDay int) time.Time {
+func getNextMonthDay(input time.Time, dueDay int) time.Time {
 	day := format.GetMonthDays(input.Year(), int(input.Month()+1))
 	switch dueDay {
 	case 29, 30:

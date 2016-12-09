@@ -21,12 +21,16 @@ const (
 	CalcTypeDaily = iota + 1
 	// 等额本息
 	CalcTypeAverageCapitalPlus
+	// 等额本金
+	CalcTypeAverageCapital
 )
 
 var mapInterests map[int]Interest
 
 func GetInterestRepo(typ int) (Interest, error) {
-	if typ != CalcTypeDaily && typ != CalcTypeAverageCapitalPlus {
+	if typ != CalcTypeDaily &&
+		typ != CalcTypeAverageCapitalPlus &&
+		typ != CalcTypeAverageCapital {
 		return nil, ErrNotSupportedCalcType.New(errors.Params{"calc_type": typ})
 	}
 	return mapInterests[typ], nil
@@ -36,6 +40,7 @@ func init() {
 	mapInterests = make(map[int]Interest)
 	mapInterests[CalcTypeDaily] = newDaily()
 	mapInterests[CalcTypeAverageCapitalPlus] = newAverageCapitalPlus()
+	mapInterests[CalcTypeAverageCapital] = newAverageCapital()
 }
 
 type Interest interface {

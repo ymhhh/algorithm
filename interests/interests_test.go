@@ -116,9 +116,107 @@ func TestAverageCapitalPlus(t *testing.T) {
 				So(amount, ShouldEqual, 134715)
 			})
 		})
+	})
+}
 
+func TestAverageCapital(t *testing.T) {
+	capital, _ := interests.GetInterestRepo(interests.CalcTypeAverageCapital)
+
+	Convey("failed get interest", t, func() {
+		set := &interests.InterestSets{
+			RateType: interests.RateTypeMonth,
+			PayTimes: 12,
+			Amount:   3000000,
+		}
+
+		Convey("input negative interest rate", func() {
+			set.InterestRate = -10.0 / 1000
+			Convey("will return error", func() {
+				_, err := capital.CalcPayback(set)
+				So(err, ShouldNotBeNil)
+			})
+		})
+
+		Convey("input not supported rate type", func() {
+			set.InterestRate = 10.0 / 1000
+			set.RateType = 0
+			Convey("will return error", func() {
+				_, err := capital.CalcPayback(set)
+				So(err, ShouldNotBeNil)
+			})
+		})
+
+		Convey("input 0 pay times", func() {
+			set.RateType = interests.RateTypeMonth
+			set.PayTimes = 0
+			Convey("will return error", func() {
+				_, err := capital.CalcPayback(set)
+				So(err, ShouldNotBeNil)
+			})
+		})
+
+		Convey("input 0 amount", func() {
+			set.PayTimes = 6
+			set.Amount = 0
+			Convey("will return error", func() {
+				_, err := capital.CalcPayback(set)
+				So(err, ShouldNotBeNil)
+			})
+		})
+
+		Convey("input invalid start date", func() {
+			set.Amount = 3000000
+			set.StartDate = ""
+			Convey("will return error", func() {
+				_, err := capital.CalcPayback(set)
+				So(err, ShouldNotBeNil)
+			})
+		})
 	})
 
+	Convey("get correct interest", t, func() {
+		set := &interests.InterestSets{
+			RateType:     interests.RateTypeYear,
+			InterestRate: 240.0 / 1000,
+			PayTimes:     12,
+			Amount:       1000000,
+			StartDate:    "2015-08-31",
+		}
+		Convey("input correct params", func() {
+			Convey("will return AverageCapital payback", func() {
+				payback, err := capital.CalcPayback(set)
+				So(err, ShouldBeNil)
+				So(payback.TotalPayBack, ShouldEqual, 1130000)
+				So(payback.Interests, ShouldEqual, 130000)
+				So(payback.PayBackDay, ShouldEqual, 31)
+				So(payback.Backs[0].PayDate, ShouldEqual, "2015-09-30")
+				So(payback.Backs[1].PayDate, ShouldEqual, "2015-10-31")
+				So(payback.Backs[11].Total, ShouldEqual, 85004)
+
+				set.StartDate = "2015-09-30"
+				payback, err = capital.CalcPayback(set)
+				So(err, ShouldBeNil)
+				So(payback.Backs[0].PayDate, ShouldEqual, "2015-10-30")
+
+				set.StartDate = "2016-02-28"
+				payback, err = capital.CalcPayback(set)
+				So(err, ShouldBeNil)
+				So(payback.Backs[0].PayDate, ShouldEqual, "2016-03-28")
+			})
+		})
+		Convey("input CalcAllPaybackAmount", func() {
+
+			Convey("will return AverageCapital payback Amount", func() {
+				amount, err := capital.CalcAllPaybackAmount(set)
+				So(err, ShouldBeNil)
+				So(amount, ShouldEqual, 1130000)
+
+				amount, err = capital.CalcAllInterests(set)
+				So(err, ShouldBeNil)
+				So(amount, ShouldEqual, 130000)
+			})
+		})
+	})
 }
 
 func TestDaily(t *testing.T) {

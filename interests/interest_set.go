@@ -24,7 +24,7 @@ type InterestSets struct {
 	RateType int `valid:"range=0,4"`
 	// 利率
 	InterestRate float64 `valid:"fmin=0.0"`
-	// 还款次数，日还款写天数
+	// 还款次数，日还款写天数，等额本息和等额本金为月数
 	PayTimes int `valid:"min=0"`
 	// 借款金额
 	Amount int64 `valid:"min=0"`
