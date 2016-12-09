@@ -176,7 +176,7 @@ func TestDaily(t *testing.T) {
 		})
 	})
 
-	Convey("get correct interest", t, func() {
+	Convey("get correct day rate interest", t, func() {
 		set := &interests.InterestSets{
 			RateType:     interests.RateTypeDay,
 			InterestRate: 0.1 / 100,
@@ -192,8 +192,7 @@ func TestDaily(t *testing.T) {
 				So(payback.Interests, ShouldEqual, 30000)
 				So(payback.EndDate, ShouldEqual, "2015-09-01")
 			})
-		})
-		Convey("CalcAllPaybackAmount", func() {
+
 			Convey("will return daily payback amount", func() {
 				amount, err := daily.CalcAllPaybackAmount(set)
 				So(err, ShouldBeNil)
@@ -202,6 +201,32 @@ func TestDaily(t *testing.T) {
 				amount, err = daily.CalcAllInterests(set)
 				So(err, ShouldBeNil)
 				So(amount, ShouldEqual, 30000)
+			})
+		})
+		set = &interests.InterestSets{
+			RateType:     interests.RateTypeYear,
+			InterestRate: 36.0 / 100,
+			PayTimes:     10,
+			Amount:       1000000,
+			StartDate:    "2015-08-31",
+		}
+		Convey("input correct year rate params", func() {
+			Convey("will return daily payback", func() {
+				payback, err := daily.CalcPayback(set)
+				So(err, ShouldBeNil)
+				So(payback.TotalPayBack, ShouldEqual, 1010000)
+				So(payback.Interests, ShouldEqual, 10000)
+				So(payback.EndDate, ShouldEqual, "2015-09-01")
+			})
+
+			Convey("will return daily payback amount", func() {
+				amount, err := daily.CalcAllPaybackAmount(set)
+				So(err, ShouldBeNil)
+				So(amount, ShouldEqual, 1010000)
+
+				amount, err = daily.CalcAllInterests(set)
+				So(err, ShouldBeNil)
+				So(amount, ShouldEqual, 10000)
 			})
 		})
 	})

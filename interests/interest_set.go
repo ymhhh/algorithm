@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	YearDays  = 365
+	YearDays  = 360
 	MonthDays = 30
 	YearMonth = 12
 )
