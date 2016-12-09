@@ -2,9 +2,8 @@ language: go
 
 install:
   - go get github.com/smartystreets/goconvey/convey
-  - go get github.com/go-rut/format
   - go get github.com/go-rut/config_reader
-  - go get -u github.com/go-rut/algorithm
+  - go get -u github.com/go-rut/algorithm/interests
 
 script:
   - go test -v ./...
