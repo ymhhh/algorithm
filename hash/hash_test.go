@@ -108,3 +108,17 @@ func TestSetMD5MaxTimes(t *testing.T) {
 		})
 	})
 }
+
+func TestCRC(t *testing.T) {
+
+	Convey("testing CRCChecksumIEEE", t, func() {
+		Convey("key length less than 64", func() {
+			value := hash.CRCChecksumIEEE("key")
+			So(value, ShouldEqual, 2324736937)
+		})
+		Convey("key length greater than 64", func() {
+			value := hash.CRCChecksumIEEE("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+			So(value, ShouldEqual, 2136978791)
+		})
+	})
+}
