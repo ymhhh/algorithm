@@ -30,7 +30,6 @@ func (p *averageCapitalPlus) calcPayback(set *InterestSets) (back *Payback) {
 		PayBackDay:   set.inStartDate.Day(),
 		TotalPayBack: p.calcAllPaybackAmount(set),
 		StartDate:    set.StartDate,
-		Principal:    set.Amount,
 	}
 
 	var tmpPerPrincipal, tmpPerInterests int64
