@@ -20,18 +20,33 @@ type HashRepo interface {
 	SumBytesTimes(bs []byte, times uint) string
 }
 ```
-### 
-
 
 ### Usage
 
-[md5_test](hash/md5_test.go)
-[sha1_test](hash/sha1_test.go)
+**md5**
 
 ```golang
-	s :=  hash.NewMD5().Sum("test") // hash.NewSHA1()
+	s :=  hash.NewHashRepo(crypto.MD5).Sum("test")
 	fmt.Println(s)
 ```
+
+**SHA1**
+```golang
+	s :=  hash.NewHashRepo(crypto.SHA1).Sum("test")
+	fmt.Println(s)
+```
+
+**support hash**
+
+* [md5](hash/md5.go)
+* [sha1](hash/sha1.go#L7)
+* [sha224](hash/sha256.go#L11)
+* [sha256](hash/sha256.go#L17)
+* [sha384](hash/sha512.go#L11)
+* [sha512](hash/sha512.go#L17)
+* [sha512_224](hash/sha512.go#L23)
+* [sha512_256](hash/sha512.go#L29)
+
 
 ## Interests
 
