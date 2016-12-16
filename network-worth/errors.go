@@ -5,10 +5,14 @@
 package worth
 
 import (
-	"errors"
+	"github.com/go-rut/errors"
+)
+
+const (
+	namespace = "AlgoNetworkWorth"
 )
 
 var (
-	ErrGraphFromNotExists   = errors.New("from graph is not exist")
-	ErrNotFoundPathToTarget = errors.New("not found path to target")
+	ErrGraphFromNotExists   = errors.TN(namespace, 1000, "from graph is not exist")
+	ErrNotFoundPathToTarget = errors.TN(namespace, 1001, "not found path to target")
 )

@@ -6,16 +6,32 @@
 
 ## Hash
 
-### Test file
+### Hash Repo
 
-[hash_test](hash/hash_test.go)
+```golang
+type HashRepo interface {
+	// checksum string once
+	Sum(s string) string
+	// checksum bytes once
+	SumBytes(bs []byte) string
+	// checksum string more times
+	SumTimes(s string, times uint) string
+	// checksum bytes more times
+	SumBytesTimes(bs []byte, times uint) string
+}
+```
+### 
 
-### Functions
 
-* [CRCChecksumIEEE](hash/crc.go#L11)
-* [SetMD5MaxTimes(times uint)](hash/md5.go#L13)
-* [MD5(s string) string](hash/md5.go#L20)
-* [MultiMD5(s string, times uint) string](hash/md5.go#L26)
+### Usage
+
+[md5_test](hash/md5_test.go)
+[sha1_test](hash/sha1_test.go)
+
+```golang
+	s :=  hash.NewMD5().Sum("test") // hash.NewSHA1()
+	fmt.Println(s)
+```
 
 ## Interests
 
@@ -42,11 +58,11 @@ func main() {
 }
 ```
 
-### AverageCapitalPlus
+### AverageCapital
 
 ```go
 func main() {
-	daily, _ := interests.GetInterestRepo(interests.CalcTypeAverageCapitalPlus)
+	average, _ := interests.GetInterestRepo(interests.CalcTypeAverageCapital)
 	set := &interests.InterestSets{
 			RateType:     interests.RateTypeDay,
 			InterestRate: 0.1 / 100,
@@ -54,7 +70,24 @@ func main() {
 			Amount:       1000000,
 			StartDate:    "2015-08-31",
 		}
-	payback, err := daily.CalcPayback(set)
+	payback, err := average.CalcPayback(set)
+	fmt.Println(err, *payback)
+}
+```
+
+### AverageCapitalPlus
+
+```go
+func main() {
+	plus, _ := interests.GetInterestRepo(interests.CalcTypeAverageCapitalPlus)
+	set := &interests.InterestSets{
+			RateType:     interests.RateTypeDay,
+			InterestRate: 0.1 / 100,
+			PayTimes:     30,
+			Amount:       1000000,
+			StartDate:    "2015-08-31",
+		}
+	payback, err := plus.CalcPayback(set)
 	fmt.Println(err, *payback)
 }
 ```

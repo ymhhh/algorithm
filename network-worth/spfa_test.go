@@ -88,7 +88,7 @@ func TestConsistent(t *testing.T) {
 				// sample => no path
 				_, err := spfa.GetPathTo(pathFrom, pathTarget, 10.0)
 				So(err, ShouldNotBeNil)
-				So(err, ShouldEqual, worth.ErrNotFoundPathToTarget)
+				So(err.Error(), ShouldEqual, worth.ErrNotFoundPathToTarget.New().Error())
 			})
 		})
 
@@ -116,6 +116,17 @@ func TestConsistent(t *testing.T) {
 				for _, v := range mapPath {
 					So(v, ShouldBeBetweenOrEqual, 4900, 5100)
 				}
+			})
+		})
+	})
+
+	Convey("remove all", t, func() {
+		spfa.Remove()
+		spfa.PrintGraphs()
+		Convey("get graph", func() {
+			Convey("will return ErrGraphFromNotExists", func() {
+				_, err := spfa.GetPathTo("1", "2", 1.0)
+				So(err.Error(), ShouldEqual, worth.ErrGraphFromNotExists.New().Error())
 			})
 		})
 	})

@@ -117,18 +117,18 @@ func (p *SPFA) GetPathTo(from, to string, flow float64) (gs *algorithm.Graphs, e
 	defer p.RUnlock()
 
 	if p.mapGraphs == nil {
-		return nil, ErrGraphFromNotExists
+		return nil, ErrGraphFromNotExists.New()
 	}
 
 	fGraphs := p.mapGraphs[from]
 	if fGraphs == nil {
-		err = ErrGraphFromNotExists
+		err = ErrGraphFromNotExists.New()
 		return
 	}
 
 	costs, flag := p.getPathTo(fGraphs, to, flow)
 	if flag == FlagPathToEnd {
-		err = ErrNotFoundPathToTarget
+		err = ErrNotFoundPathToTarget.New()
 		return
 	}
 

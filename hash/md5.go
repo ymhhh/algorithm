@@ -7,22 +7,28 @@ package hash
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"errors"
 )
 
-var (
-	maxMD5Times uint = 10
+type defaultMD5 struct{}
 
-	ErrMaxMD5TimesShouldGreaterThanZero = errors.New("md5 max times must above zero")
-)
+func NewMD5() HashRepo {
+	return (*defaultMD5)(nil)
+}
 
-// default max md5 times is 10
-func SetMD5MaxTimes(times uint) error {
-	if times <= 0 {
-		return ErrMaxMD5TimesShouldGreaterThanZero
-	}
-	maxMD5Times = times
-	return nil
+func (p *defaultMD5) Sum(s string) string {
+	return MD5(s)
+}
+
+func (p *defaultMD5) SumBytes(bs []byte) string {
+	return p.Sum(string(bs))
+}
+
+func (p *defaultMD5) SumTimes(s string, times uint) string {
+	return MultiMD5(s, times)
+}
+
+func (p *defaultMD5) SumBytesTimes(bs []byte, times uint) string {
+	return p.SumTimes(string(bs), times)
 }
 
 func MD5(s string) string {
@@ -31,16 +37,13 @@ func MD5(s string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func MultiMD5(s string, times uint) (md5 string) {
+func MultiMD5(s string, times uint) string {
 	if times == 0 {
-		return
-	} else if times > maxMD5Times {
-		times = maxMD5Times
+		return ""
 	}
 
-	md5 = s
 	for i := 0; i < int(times); i++ {
-		md5 = MD5(md5)
+		s = MD5(s)
 	}
-	return
+	return s
 }
