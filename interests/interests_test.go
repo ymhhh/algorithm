@@ -5,6 +5,7 @@
 package interests_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/go-rut/algorithm/interests"
@@ -136,6 +137,27 @@ func TestAverageCapitalPlus(t *testing.T) {
 				So(payback.Backs[23].PayDate, ShouldEqual, "2018-12-10")
 				So(payback.Backs[22].Total, ShouldEqual, 106889)
 				So(payback.Backs[23].Total, ShouldEqual, 106896)
+			})
+		})
+		Convey("input 0.18", func() {
+			set := &interests.InterestSets{
+				RateType:     interests.RateTypeDay,
+				InterestRate: 0.018 / 100,
+				PayTimes:     24,
+				Amount:       10000000,
+				StartDate:    "2016-12-10",
+			}
+
+			Convey("will return AverageCapitalPlus payback", func() {
+				payback, _ := plus.CalcPayback(set)
+				fmt.Println(payback)
+				x := 0.0
+				for _, v := range payback.Backs {
+					x += float64(payback.Principal) * 12.0 / 100.0 / 12
+					payback.Principal = payback.Principal - v.Total + int64(x)
+					fmt.Println(x, v.Interests)
+				}
+				fmt.Println(x, int64(x)-payback.Interests)
 			})
 		})
 	})

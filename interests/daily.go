@@ -1,3 +1,7 @@
+// MIT License
+
+// Copyright (c) 2016 rutcode-go
+
 package interests
 
 import (
