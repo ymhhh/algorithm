@@ -114,7 +114,7 @@ func TestConsistent(t *testing.T) {
 				}
 
 				for _, v := range mapPath {
-					So(v, ShouldBeBetweenOrEqual, 4900, 5100)
+					So(v, ShouldBeBetweenOrEqual, 4800, 5200)
 				}
 			})
 		})

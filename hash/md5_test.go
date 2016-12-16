@@ -5,14 +5,11 @@
 package hash_test
 
 import (
+	"crypto"
 	"testing"
 
 	"github.com/go-rut/algorithm/hash"
 	. "github.com/smartystreets/goconvey/convey"
-)
-
-const (
-	str = "test"
 )
 
 func TestMD5(t *testing.T) {
@@ -29,7 +26,7 @@ func TestMD5(t *testing.T) {
 				result := hash.MD5(str)
 				So(result, ShouldEqual, "098f6bcd4621d373cade4e832627b4f6")
 
-				result = hash.NewMD5().SumBytes([]byte(str))
+				result = hash.NewHashRepo(crypto.MD5).SumBytes([]byte(str))
 				So(result, ShouldEqual, "098f6bcd4621d373cade4e832627b4f6")
 			})
 		})

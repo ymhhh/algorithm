@@ -5,6 +5,7 @@
 package hash_test
 
 import (
+	"crypto"
 	"testing"
 
 	"github.com/go-rut/algorithm/hash"
@@ -27,7 +28,7 @@ func TestNewSHA1(t *testing.T) {
 				result := hash.NewSHA1().SumTimes(str, times)
 				So(result, ShouldEqual, "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3")
 
-				result = hash.NewSHA1().Sum(str)
+				result = hash.NewHashRepo(crypto.SHA1).Sum(str)
 				So(result, ShouldEqual, "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3")
 			})
 		})
@@ -35,11 +36,11 @@ func TestNewSHA1(t *testing.T) {
 		Convey("when times equals 2", func() {
 			Convey("should return sum \"test\" twice", func() {
 				times = 2
-				result := hash.NewSHA1().SumTimes(str, times)
+				result := hash.NewSHA1().SumBytesTimes([]byte(str), times)
+				So(result, ShouldEqual, "c4033bff94b567a190e33faa551f411caef444f2")
+				result = hash.NewSHA1().SumTimes(str, times)
 				So(result, ShouldEqual, "c4033bff94b567a190e33faa551f411caef444f2")
 
-				result = hash.NewSHA1().SumBytesTimes([]byte(str), times)
-				So(result, ShouldEqual, "c4033bff94b567a190e33faa551f411caef444f2")
 			})
 		})
 	})

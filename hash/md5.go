@@ -9,26 +9,10 @@ import (
 	"encoding/hex"
 )
 
-type defaultMD5 struct{}
-
 func NewMD5() HashRepo {
-	return (*defaultMD5)(nil)
-}
-
-func (p *defaultMD5) Sum(s string) string {
-	return MD5(s)
-}
-
-func (p *defaultMD5) SumBytes(bs []byte) string {
-	return p.Sum(string(bs))
-}
-
-func (p *defaultMD5) SumTimes(s string, times uint) string {
-	return MultiMD5(s, times)
-}
-
-func (p *defaultMD5) SumBytesTimes(bs []byte, times uint) string {
-	return p.SumTimes(string(bs), times)
+	return &defaultHash{
+		Hash: md5.New(),
+	}
 }
 
 func MD5(s string) string {
