@@ -15,12 +15,14 @@ func NewMD5() HashRepo {
 	}
 }
 
+// MD5 for elder api
 func MD5(s string) string {
 	h := md5.New()
 	h.Write([]byte(s))
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+// MultiMD5 for elder api
 func MultiMD5(s string, times uint) string {
 	if times == 0 {
 		return ""

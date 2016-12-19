@@ -6,15 +6,13 @@ package hash
 
 import (
 	"crypto"
-	"encoding/hex"
-	"hash"
 )
 
 type HashRepo interface {
 	Sum(s string) string
-	SumBytes(bs []byte) string
+	SumBytes(b []byte) string
 	SumTimes(s string, times uint) string
-	SumBytesTimes(bs []byte, times uint) string
+	SumBytesTimes(b []byte, times uint) string
 }
 
 func NewHashRepo(h crypto.Hash) HashRepo {
@@ -37,33 +35,4 @@ func NewHashRepo(h crypto.Hash) HashRepo {
 	}
 
 	return nil
-}
-
-type defaultHash struct {
-	Hash hash.Hash
-}
-
-func (p *defaultHash) Sum(s string) string {
-	return p.SumBytes([]byte(s))
-}
-
-func (p *defaultHash) SumBytes(data []byte) string {
-	p.Hash.Reset()
-	p.Hash.Write(data)
-	return hex.EncodeToString(p.Hash.Sum(nil))
-}
-
-func (p *defaultHash) SumTimes(s string, times uint) string {
-	if times == 0 {
-		return ""
-	}
-
-	for i := 0; i < int(times); i++ {
-		s = p.Sum(s)
-	}
-	return s
-}
-
-func (p *defaultHash) SumBytesTimes(bs []byte, times uint) string {
-	return p.SumTimes(string(bs), times)
 }
